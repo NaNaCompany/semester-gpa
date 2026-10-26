@@ -1,0 +1,59 @@
+{
+  "slug": "semester-gpa",
+  "url": "https://nanalab.kr/semester-gpa/",
+  "languages": [
+    "ko",
+    "en",
+    "es",
+    "zh",
+    "ja",
+    "de"
+  ],
+  "locales": {
+    "ko": {
+      "name": "학기 성적 시뮬레이터",
+      "description": "직접 설정한 등급 환산표·학점으로 학기·누적 평점과 재수강 교체, 목표에 필요한 평균을 계산하세요.",
+      "image_alt": "학기 성적 시뮬레이터"
+    },
+    "en": {
+      "name": "Semester GPA Simulator",
+      "description": "Use a custom grade scale and credits to calculate semester and cumulative GPA, retake replacements and the average needed for a target.",
+      "image_alt": "Semester GPA Simulator"
+    },
+    "es": {
+      "name": "Simulador de promedio académico",
+      "description": "Usa una escala de notas y créditos propia para calcular promedios semestrales y acumulados, sustituciones por repetición y la media necesaria para una meta.",
+      "image_alt": "Simulador de promedio académico"
+    },
+    "zh": {
+      "name": "学期绩点模拟器",
+      "description": "使用自定义成绩换算表和学分，计算学期及累计绩点、重修替换与目标所需平均分。",
+      "image_alt": "学期绩点模拟器"
+    },
+    "ja": {
+      "name": "学期成績シミュレーター",
+      "description": "独自の評点換算表と単位数で学期・累積の成績平均、再履修の置き換え、目標に必要な平均を計算できます。",
+      "image_alt": "学期成績シミュレーター"
+    },
+    "de": {
+      "name": "Semester-Notensimulator",
+      "description": "Berechnen Sie mit eigener Notenskala und Leistungspunkten Semester- und Gesamtdurchschnitt, Wiederholungsersatz und den nötigen Zieldurchschnitt.",
+      "image_alt": "Semester-Notensimulator"
+    },
+    "fr": {
+      "name": "Simulateur de moyenne universitaire",
+      "description": "Utilisez votre barème de notes et vos crédits pour calculer les moyennes semestrielles et cumulées, les remplacements après reprise et la moyenne nécessaire à un objectif.",
+      "image_alt": "Simulateur de moyenne universitaire"
+    },
+    "pt": {
+      "name": "Simulador de média acadêmica",
+      "description": "Use uma escala de notas e créditos própria para calcular médias semestrais e acumuladas, substituições por repetição e a média necessária para uma meta.",
+      "image_alt": "Simulador de média acadêmica"
+    },
+    "ru": {
+      "name": "Симулятор среднего балла",
+      "description": "Используйте собственную шкалу оценок и кредиты, чтобы рассчитать средний балл за семестр и весь период, замену пересдач и средний балл для цели.",
+      "image_alt": "Симулятор среднего балла"
+    }
+  }
+}

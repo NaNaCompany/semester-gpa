@@ -1,4 +1,22 @@
 import pathlib,json
+
+# Shared book banner adapter; the campaign itself is maintained in src_cdn.
+def _shared_book_banner(value):
+    if isinstance(value, dict) and any(isinstance(key, str) and key.endswith('.html') for key in value):
+        return {key: _shared_book_banner(item) for key, item in value.items()}
+    if not isinstance(value, str) or not value.lstrip('\ufeff \r\n\t').lower().startswith(('<!doctype html', '<html')) or 'https://nanalab.kr/src_cdn/banner/astra.js' in value:
+        return value
+    snippet = '<!-- NaNa shared book banner --><script defer src="https://nanalab.kr/src_cdn/banner/astra.js"></script><!-- /NaNa shared book banner -->'
+    import re
+    opening = re.search(r'<head\b[^>]*>', value, re.I)
+    if opening:
+        return value[:opening.end()] + snippet + value[opening.end():]
+    for closing in ['</body>', '</html>']:
+        at = value.lower().find(closing)
+        if at >= 0:
+            return value[:at] + snippet + value[at:]
+    return value + snippet
+
 root=pathlib.Path(__file__).parent
 langs=['ko','en','es','zh','ja','de']
 data=r'''title|학기 성적 시뮬레이터|Semester GPA Simulator|Simulador de promedio académico|学期绩点模拟器|学期成績シミュレーター|Semester-Notensimulator
@@ -52,7 +70,7 @@ for line in data.splitlines():
  key,*v=line.split('|')
  if len(v)!=6:raise ValueError((key,len(v)))
  for l,s in zip(langs,v):catalog[l][key]=s.replace('\\n','\n')
-(root/'dist/locales.js').write_text('import {catalog as base} from "./base-locales.js";const extra='+json.dumps(catalog,ensure_ascii=False)+';export const catalog=Object.fromEntries(Object.keys(extra).map(l=>[l,{...base[l],...extra[l]}]));',encoding='utf-8')
+(root/'dist/locales.js').write_text(_shared_book_banner(('import {catalog as base} from "./base-locales.js";const extra='+json.dumps(catalog,ensure_ascii=False)+';export const catalog=Object.fromEntries(Object.keys(extra).map(l=>[l,{...base[l],...extra[l]}]));')),encoding='utf-8')
 template='''<!doctype html><html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><base href="{base}"><title>{title}</title><link rel="stylesheet" href="style.css"></head><body><main><header><a class="brand" href="./">LOCAL / STUDY TOOLS</a><span class="badge" data-t="badge"></span><label><span data-t="language"></span> <select id="language" aria-label="{language}"><option value="ko">한국어</option><option value="en">English</option><option value="es">Español</option><option value="zh">简体中文</option><option value="ja">日本語</option><option value="de">Deutsch</option></select></label></header><section class="hero"><p class="eyebrow">SEMESTER GPA</p><h1 data-t="hero" style="white-space:pre-line"></h1><p data-t="intro"></p></section><div class="settings-grid"><section class="panel"><h2 data-t="settings"></h2><div class="fields"><label><span data-t="max"></span><input id="max" type="number" value="4.5" min="1" max="10" step="0.1"></label><label><span data-t="priorCredits"></span><input id="priorCredits" type="number" value="30" min="0" max="10000" step="0.1"></label><label><span data-t="priorGpa"></span><input id="priorGpa" type="number" value="3.2" min="0" max="10" step="0.01"></label></div><label class="field"><span data-t="scale"></span><textarea id="scale" rows="5" spellcheck="false">A+=4.5
 A=4
 B+=3.5
@@ -65,4 +83,4 @@ F=0</textarea></label><p class="footnote" data-t="scaleHint"></p></section><sect
 for lang in langs:
  out=root/'dist'/('' if lang=='ko' else lang);out.mkdir(exist_ok=True)
  html=template.replace('{lang}',lang).replace('{base}','./' if lang=='ko' else '../').replace('{title}',catalog[lang]['title']).replace('{language}',{'ko':'언어','en':'Language','es':'Idioma','zh':'语言','ja':'言語','de':'Sprache'}[lang])
- (out/'index.html').write_text(html,encoding='utf-8')
+ (out/'index.html').write_text(_shared_book_banner((html)),encoding='utf-8')
